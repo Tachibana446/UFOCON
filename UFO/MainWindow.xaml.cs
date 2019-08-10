@@ -26,7 +26,7 @@ namespace UFO
         {
             InitializeComponent();
             this.Closing += (s, e) => PortUtil.Instance.Close();
-            stopButton.Click += (s, e) => PortUtil.Instance.PushData(true, 0);
+            stopButton.Click += (s, e) => PortUtil.Instance.SendData(true, 0);
             PortUtil.Instance.FindPort();
         }
 
@@ -101,7 +101,8 @@ namespace UFO
                 return;
             }
             Data data = dataList.LastOrDefault(d => d.Time > lastTime && d.Time <= nowTime);
-            PortUtil.Instance.PushData(data.Direction == 1, data.Level);
+            PortUtil.Instance.SendData(data.Direction == 1, data.Level);
+            lastTime = nowTime;
         }
 
         /// <summary>

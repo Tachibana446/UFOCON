@@ -103,6 +103,7 @@ namespace UFO
         private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
             player.Pause();
+            PortUtil.Instance.SendStop();
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

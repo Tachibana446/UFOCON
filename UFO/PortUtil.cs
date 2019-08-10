@@ -37,11 +37,16 @@ namespace UFO
                 p.ReadTimeout = 100;
                 p.Write(CheckCmd, 0, CheckCmd.Length);
                 Int32 result = p.ReadByte();
+                // UFOは機種識別用のデータに対して0x02を返す。なおA10は0x01を返すらしい。
                 if (result == 2)
                 {
                     portName = name;
                     Port = p;
                     break;
+                }
+                else
+                {
+                    p.Close();
                 }
             }
             if (Port == null)
@@ -79,7 +84,7 @@ namespace UFO
         /// </summary>
         /// <param name="direction">正方向ならtrue</param>
         /// <param name="value">0 ~ 100</param>
-        public void PushData(bool direction, int value)
+        public void SendData(bool direction, int value)
         {
             if (!Port.IsOpen)
                 return;
@@ -96,6 +101,14 @@ namespace UFO
             Port.Write(data, 0, data.Length);
         }
 
+        /// <summary>
+        /// UFOの回転を止める
+        /// </summary>
+        public void SendStop()
+        {
+            SendData(true, 0);
+        }
+
         public void TypeCheck()
         {
 
@@ -104,6 +117,7 @@ namespace UFO
 
         public void Close()
         {
+            SendStop();
             Port.Close();
         }
     }
