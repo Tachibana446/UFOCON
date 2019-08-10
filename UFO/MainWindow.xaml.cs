@@ -30,6 +30,7 @@ namespace UFO
             portsComboBox.SelectionChanged += (s, e) => PortUtil.Instance.SetPort(portsComboBox.SelectedItem.ToString().Trim());
             sendButton.Click += (s, e) => SamplePush();
             stopButton.Click += (s, e) => PortUtil.Instance.PushData(true, 0);
+            PortUtil.Instance.FindPort();
         }
 
         /// <summary>

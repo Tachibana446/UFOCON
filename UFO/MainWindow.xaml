@@ -20,6 +20,7 @@
 
         <local:MediaPlayer x:Name="mediaPlayer" Grid.Row="1" />
         <TextBlock HorizontalAlignment="Left" Margin="10,25,0,0" TextWrapping="Wrap" Text="シリアルポートを指定" VerticalAlignment="Top"/>
+        <TextBlock x:Name="debugText" HorizontalAlignment="Left" Margin="198,25,0,0" TextWrapping="Wrap" Text="シリアルポートを指定" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

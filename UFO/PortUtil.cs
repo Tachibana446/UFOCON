@@ -12,9 +12,47 @@ namespace UFO
         public static PortUtil Instance = new PortUtil();
 
         public SerialPort Port { get; private set; } = new SerialPort();
+        public string portName { get; private set; }
 
+        /// <summary>
+        /// 機種識別用のデータ
+        /// </summary>
+        readonly byte[] CheckCmd = new byte[] { 0xF0, 0x01, 0x00 };
+
+
+        /// <summary>
+        /// 自動的にポートを探す.見つからなければnull
+        /// </summary>
+        public void FindPort()
+        {
+            Port?.Close();
+            Port = null;
+
+            foreach (var name in SerialPort.GetPortNames())
+            {
+                var p = new SerialPort(name, 19200, Parity.None, 8, StopBits.One);
+                p.Open();
+                p.DtrEnable = true;
+                p.RtsEnable = true;
+                p.ReadTimeout = 100;
+                p.Write(CheckCmd, 0, CheckCmd.Length);
+                Int32 result = p.ReadByte();
+                if (result == 2)
+                {
+                    portName = name;
+                    Port = p;
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// ポートの手動指定
+        /// </summary>
+        /// <param name="portName">COM5とか</param>
         public void SetPort(string portName)
         {
+            this.portName = portName;
             Port.Close();
             Port = new SerialPort(portName, 19200, Parity.None, 8, StopBits.One);
             Port.Open();
@@ -24,8 +62,6 @@ namespace UFO
             Port.ReadTimeout = 100;
         }
 
-        readonly byte[] StopCmd = new byte[] { 0x02, 0x01, 0x00 };
-        readonly byte[] CheckCmd = new byte[] { 0xF0, 0x01, 0x00 };
 
         /// <summary>
         /// ポート一覧を返す
