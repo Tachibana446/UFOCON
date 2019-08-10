@@ -23,7 +23,7 @@
             </Grid>
         </TabItem>
         <TabItem Header="シリアルポート">
-            <local:PortSelectControl Loaded="PortSelectControl_Loaded" />
+            <local:PortSelectControl />
         </TabItem>
     </TabControl>
 </Window>
