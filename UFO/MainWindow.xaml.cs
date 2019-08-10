@@ -25,29 +25,9 @@ namespace UFO
         public MainWindow()
         {
             InitializeComponent();
-            SetUpPortsCombobox();
             this.Closing += (s, e) => PortUtil.Instance.Close();
-            portsComboBox.SelectionChanged += (s, e) => PortUtil.Instance.SetPort(portsComboBox.SelectedItem.ToString().Trim());
-            sendButton.Click += (s, e) => SamplePush();
             stopButton.Click += (s, e) => PortUtil.Instance.PushData(true, 0);
             PortUtil.Instance.FindPort();
-        }
-
-        /// <summary>
-        /// コンボボックスにポート一覧を表示
-        /// </summary>
-        private void SetUpPortsCombobox()
-        {
-            string[] ports = PortUtil.GetPorts();
-            foreach (var p in ports)
-            {
-                portsComboBox.Items.Add(p);
-            }
-        }
-
-        private void SamplePush()
-        {
-            PortUtil.Instance.PushData(true, 50);
         }
 
         private void CSVFileOpenButton_Click(object sender, RoutedEventArgs e)

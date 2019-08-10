@@ -12,7 +12,7 @@ namespace UFO
         public static PortUtil Instance = new PortUtil();
 
         public SerialPort Port { get; private set; } = new SerialPort();
-        public string portName { get; private set; }
+        public string portName { get; private set; } = "なし";
 
         /// <summary>
         /// 機種識別用のデータ
@@ -44,6 +44,8 @@ namespace UFO
                     break;
                 }
             }
+            if (Port == null)
+                portName = "なし";
         }
 
         /// <summary>
