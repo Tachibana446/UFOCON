@@ -6,17 +6,22 @@
              xmlns:local="clr-namespace:UFO"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Button x:Name="openFileButton" Content="開く" HorizontalAlignment="Left" Margin="317,146,0,0" VerticalAlignment="Top" Width="75" Click="OpenFileButton_Click"/>
-        <TextBlock x:Name="filePath" HorizontalAlignment="Left" Height="23" Margin="115,143,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="197"/>
-        <TextBlock HorizontalAlignment="Left" Margin="61,146,0,0" TextWrapping="Wrap" Text="ファイル：" VerticalAlignment="Top"/>
-        <Button x:Name="playButton" Content="▶" HorizontalAlignment="Left" Margin="189,171,0,0" VerticalAlignment="Top" Width="40" Height="41" Click="PlayButton_Click"/>
-        <Button x:Name="pauseButton" Content="||" HorizontalAlignment="Left" Margin="144,171,0,0" VerticalAlignment="Top" Width="40" Height="41" Click="PauseButton_Click"/>
-        <TextBlock x:Name="playTimeText" HorizontalAlignment="Left" Margin="189,227,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"><Run Text="00:00"/><LineBreak/><Run/></TextBlock>
-        <TextBlock x:Name="totalPlayTimeText" HorizontalAlignment="Left" Margin="189,259,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"><Run Text="00:00"/><LineBreak/><Run/></TextBlock>
-        <Slider x:Name="slider" HorizontalAlignment="Left" Margin="61,123,0,0" VerticalAlignment="Top" Width="331"
+    <StackPanel HorizontalAlignment="Center">
+        <Slider x:Name="slider" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="331"
                 ValueChanged="Slider_ValueChanged"/>
-        <Button x:Name="add10secButton" Content="+10" HorizontalAlignment="Left" Margin="234,171,0,0" VerticalAlignment="Top" Width="40" Height="41" Click="Add10secButton_Click"/>
-        <Button x:Name="back5secButton" Content="-5" HorizontalAlignment="Left" Margin="99,171,0,0" VerticalAlignment="Top" Width="40" Height="41" Click="Back5secButton_Click"/>
-    </Grid>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="ファイル：" VerticalAlignment="Top"/>
+            <TextBlock x:Name="filePath" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="197"/>
+            <Button x:Name="openFileButton" Content="開く" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="OpenFileButton_Click"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="back5secButton" Content="-5" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="40" Height="41" Click="Back5secButton_Click"/>
+            <Button x:Name="pauseButton" Content="||" HorizontalAlignment="Left"  Margin="5" VerticalAlignment="Top" Width="40" Height="41" Click="PauseButton_Click"/>
+            <Button x:Name="playButton" Content="▶" HorizontalAlignment="Left" Margin="5"  VerticalAlignment="Top" Width="40" Height="41" Click="PlayButton_Click"/>
+            <Button x:Name="add10secButton" Content="+10" HorizontalAlignment="Left"  Margin="5"  VerticalAlignment="Top" Width="40" Height="41" Click="Add10secButton_Click"/>
+        </StackPanel>
+        <TextBlock x:Name="playTimeText" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"><Run Text="00:00"/><LineBreak/><Run/></TextBlock>
+        <TextBlock x:Name="totalPlayTimeText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"><Run Text="00:00"/><LineBreak/><Run/></TextBlock>
+
+    </StackPanel>
 </UserControl>
