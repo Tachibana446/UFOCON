@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <ComboBox x:Name="portsComboBox" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
+        <Button x:Name="sendButton" Content="SEND" HorizontalAlignment="Left" Margin="252,93,0,0" VerticalAlignment="Top" Width="105" Height="64" />
+        <Button x:Name="stopButton" Content="STOP" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" Width="105" Height="64" Grid.Row="0"/>
+        <Button x:Name="CSVFileOpenButton" Content="開く" HorizontalAlignment="Left" Margin="240,164,0,0" VerticalAlignment="Top" Width="75" Click="CSVFileOpenButton_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,166,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="CSVファイル"/><Run Text="："/></TextBlock>
+        <TextBlock x:Name="CSVFilePathText" HorizontalAlignment="Left" Margin="82,166,0,0" TextWrapping="Wrap" Text="なし" VerticalAlignment="Top" Width="140"/>
+
+        <local:MediaPlayer x:Name="mediaPlayer" Grid.Row="1" />
+        <TextBlock HorizontalAlignment="Left" Margin="10,25,0,0" TextWrapping="Wrap" Text="シリアルポートを指定" VerticalAlignment="Top"/>
+
     </Grid>
 </Window>
