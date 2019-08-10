@@ -5,18 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UFO"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="433" Width="800">
     <TabControl>
         <TabItem Header="メイン">
-            <Grid>
-                <Button x:Name="stopButton" Content="STOP" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="105" Height="64" Grid.Row="0"/>
-                <Button x:Name="CSVFileOpenButton" Content="開く" HorizontalAlignment="Left" Margin="240,164,0,0" VerticalAlignment="Top" Width="75" Click="CSVFileOpenButton_Click"/>
-                <TextBlock HorizontalAlignment="Left" Margin="10,166,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="CSVファイル"/><Run Text="："/></TextBlock>
-                <TextBlock x:Name="CSVFilePathText" HorizontalAlignment="Left" Margin="82,166,0,0" TextWrapping="Wrap" Text="なし" VerticalAlignment="Top" Width="140"/>
+            <DockPanel>
+                <GroupBox Header="音声" HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Padding="30,10" Margin="5">
+                    <local:MediaPlayer x:Name="mediaPlayer"/>
+                </GroupBox>
+                <GroupBox Header="UFO操作" DockPanel.Dock="Left" HorizontalAlignment="Center" Padding="30,10" Margin="5">
+                    <Button x:Name="stopButton" Content="STOP" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="105" Height="64" />
+                </GroupBox>
 
-                <local:MediaPlayer x:Name="mediaPlayer"  />
-
-            </Grid>
+                <GroupBox HorizontalAlignment="Center" Header="CSV" Padding="30,10" Margin="0,5">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="CSVファイル"/><Run Text="："/></TextBlock>
+                        <TextBlock x:Name="CSVFilePathText" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="なし" VerticalAlignment="Top" Width="140"/>
+                        <Button x:Name="CSVFileOpenButton" Content="開く" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="CSVFileOpenButton_Click"/>
+                    </StackPanel>
+                </GroupBox>
+            </DockPanel>
         </TabItem>
         <TabItem Header="シリアルポート">
             <local:PortSelectControl />
