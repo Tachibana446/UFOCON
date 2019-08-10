@@ -17,10 +17,16 @@
                 </GroupBox>
 
                 <GroupBox HorizontalAlignment="Center" Header="CSV" Padding="30,10" Margin="0,5">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="CSVファイル"/><Run Text="："/></TextBlock>
-                        <TextBlock x:Name="CSVFilePathText" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="なし" VerticalAlignment="Top" Width="140"/>
-                        <Button x:Name="CSVFileOpenButton" Content="開く" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="CSVFileOpenButton_Click"/>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="CSVファイル"/><Run Text="："/></TextBlock>
+                            <TextBlock x:Name="CSVFilePathText" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="なし" VerticalAlignment="Top" Width="140"/>
+                            <Button x:Name="CSVFileOpenButton" Content="開く" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="CSVFileOpenButton_Click"/>
+                        </StackPanel>
+                        <TextBlock>CSVの形式は 時間(1/10秒), 方向, 強さ</TextBlock>
+                        <TextBlock Foreground="Gray">時間が3000なら300.0秒に稼働</TextBlock>
+                        <TextBlock Foreground="Gray">方向は0か1で指定</TextBlock>
+                        <TextBlock Foreground="Gray">強さは0～100の間で指定</TextBlock>
                     </StackPanel>
                 </GroupBox>
             </DockPanel>

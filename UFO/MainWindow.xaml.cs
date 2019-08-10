@@ -33,6 +33,7 @@ namespace UFO
         private void CSVFileOpenButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
+            dialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
             if (dialog.ShowDialog() == true)
             {
                 LoadCSV(dialog.FileName);
@@ -70,6 +71,11 @@ namespace UFO
                 {
                     continue;
                 }
+            }
+            // ファイル名の表示
+            if (dataList.Count > 0)
+            {
+                CSVFilePathText.Text = System.IO.Path.GetFileName(filepath);
             }
             // 時間順にソート
             dataList.Sort((a, b) => a.Time - b.Time);
