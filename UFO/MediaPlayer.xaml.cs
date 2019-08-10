@@ -65,6 +65,7 @@ namespace UFO
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "wav files (*.wav)|*.wav|All files (*.*)|*.*";
             if (dialog.ShowDialog() == true)
             {
                 filePath.Text = dialog.FileName;
@@ -79,10 +80,19 @@ namespace UFO
                 {
                     Interval = TimeSpan.FromMilliseconds(100)
                 };
-                mediaPositionTimer.Tick += (_s, _e) => playTimeText.Text = player.Position.ToString(@"hh\:mm\:ss\.f");
-                mediaPositionTimer.Tick += (_s, _e) => totalPlayTimeText.Text = player.Position.TotalSeconds.ToString();
+                mediaPositionTimer.Tick += (_s, _e) => SetPlayTimeText(player.Position);
                 mediaPositionTimer.Start();
             }
+        }
+
+        /// <summary>
+        /// 現在の再生時間を表示
+        /// </summary>
+        /// <param name="position"></param>
+        private void SetPlayTimeText(TimeSpan position)
+        {
+            string text = position.ToString(@"hh\:mm\:ss\.ff") + " (" + Math.Round(position.TotalSeconds * 10, 0, MidpointRounding.AwayFromZero).ToString() + ")";
+            playTimeText.Text = text;
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
