@@ -44,7 +44,19 @@ namespace UFO
         /// 1:1pxあたり0.1sec   
         /// 0.1: 1pxあたり0.01sec
         /// </summary>
-        private double horizonRange = 1;
+        private double horizonRange
+        {
+            get { return _horizonRange; }
+            set
+            {
+                if (value != _horizonRange)
+                {
+                    _horizonRange = value;
+                    horizonRangeSlider.Value = value;
+                }
+            }
+        }
+        private double _horizonRange = 1;
         /// <summary>
         /// 縦方向の倍率
         /// </summary>
@@ -191,6 +203,7 @@ namespace UFO
         {
             // 値を更新
             verticalRange = -1 * verticalRangeSlider.Value;
+            horizonRange = horizonRangeSlider.Value;
             // 描画
             SetGraph(MainWindow.Instance.dataList);
         }
