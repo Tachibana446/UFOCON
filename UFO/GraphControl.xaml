@@ -16,6 +16,7 @@
         </StackPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
             <Canvas x:Name="canvas">
+                <Line x:Name="positionLine" X1="10" X2="10" Y1="5" Y2="300" Stroke="Blue" StrokeThickness="2"/>
             </Canvas>
         </ScrollViewer>
     </DockPanel>

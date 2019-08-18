@@ -24,8 +24,18 @@ namespace UFO
     {
         public System.Windows.Media.MediaPlayer player = new System.Windows.Media.MediaPlayer();
 
+        /// <summary>
+        /// 再生時刻を表示するタイマー
+        /// </summary>
         private DispatcherTimer mediaPositionTimer = null;
+        /// <summary>
+        /// スライダーの位置を更新するタイマー
+        /// </summary>
         private DispatcherTimer sliderPostionTimer = null;
+        /// <summary>
+        /// グラフの位置を更新するタイマー
+        /// </summary>
+        private DispatcherTimer graphPositionTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
 
         /// <summary>
         /// Slider_ValueChangedイベントがユーザーの手で起こされたものかコード上起こされたものか判別する
@@ -38,7 +48,23 @@ namespace UFO
 
             slider.IsEnabled = false;
             player.MediaOpened += Player_MediaOpened;
+            graphPositionTimer.Tick += GraphPositionTimer_Tick;
+            graphPositionTimer.Start();
         }
+
+        /// <summary>
+        /// グラフ更新用のタイマー
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GraphPositionTimer_Tick(object sender, EventArgs e)
+        {
+            if (player.NaturalDuration.HasTimeSpan)
+            {
+                MainWindow.Instance.graphControl.SetPosition(player.Position, player.Clock?.IsPaused);
+            }
+        }
+
 
         /// <summary>
         /// ファイルの読み込みが完了したときスライダーをセットする

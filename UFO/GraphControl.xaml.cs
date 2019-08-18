@@ -125,6 +125,20 @@ namespace UFO
             canvas.Width = prev.X + 5;
             SetGridLines(prev.X + 5);
             SetTimeGrid();
+            // 現在時の線の高さ
+            positionLine.Y1 = 5;
+            positionLine.Y2 = Math.Abs(verticalRange) * 200 - 5;
+        }
+
+        /// <summary>
+        /// 現在時刻を更新し、その位置に線を表示する
+        /// </summary>
+        /// <param name="position"></param>
+        public void SetPosition(TimeSpan position, bool? playerIsPlaying)
+        {
+            double nowTime = position.TotalSeconds * 10;
+            double x = nowTime / horizonRange;
+            positionLine.X1 = positionLine.X2 = x;
         }
 
         /// <summary>
