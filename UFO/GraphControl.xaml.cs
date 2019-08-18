@@ -26,8 +26,41 @@ namespace UFO
             canvas.Children.Add(polyline);
         }
 
-        private Polyline polyline = new Polyline() { Stroke = Brushes.Pink, StrokeThickness = 2 };
+        private Polyline polyline = new Polyline() { Stroke = Brushes.Red, StrokeThickness = 2 };
         private List<Line> gridLines = new List<Line>();
+
+        #region グラフの大きさに関わる変数
+        /// <summary>
+        /// 横方向の倍率 
+        /// 10: 1pxあたり1sec  
+        /// 1:1pxあたり0.1sec   
+        /// 0.1: 1pxあたり0.01sec
+        /// </summary>
+        private double horizonRange = 1;
+        /// <summary>
+        /// 縦方向の倍率
+        /// </summary>
+        private double verticalRange
+        {
+            get
+            {
+                return _verticalRange;
+            }
+            set
+            {
+                if (value != _verticalRange)
+                {
+                    _verticalRange = value;
+                    verticalRangeTextBox.Text = value.ToString();
+                }
+            }
+        }
+        private double _verticalRange = -1.7;
+        /// <summary>
+        /// グラフ描画用の縦の位置オフセット
+        /// </summary>
+        private double offset { get { return 100 * verticalRange; } }
+        #endregion
 
         /// <summary>
         /// 一度グラフを描画したか　してないときMainWindows側で描画SetGraphを呼び出す
@@ -50,12 +83,6 @@ namespace UFO
 
             polyline.Points.Clear();
 
-            // 横方向の倍率 10: 1pxあたり1sec  1:1pxあたり0.1sec   0.1: 1pxあたり0.01sec
-            double horizonRange = 1;
-            // 縦方向の倍率
-            double verticalRange = -1.8;
-            double offset = 100 * verticalRange;
-
             Point prev = new Point();
             bool first = true;
             foreach (var d in data)
@@ -76,16 +103,15 @@ namespace UFO
                 prev = p1;
             }
             canvas.Width = prev.X + 5;
-            SetGridLines(verticalRange, prev.X + 5);
+            SetGridLines(prev.X + 5);
         }
 
         /// <summary>
         /// グリッド線の追加
         /// </summary>
-        /// <param name="vertialRange">縦倍率</param>
         /// <param name="width">Canvasの幅</param>
-        /// <param name="Split">何本出すか</param>
-        private void SetGridLines(double vertialRange, double width, int Split = 4)
+        /// <param name="Split">何本出すか(偶数じゃないとセンターラインがなくなる）</param>
+        private void SetGridLines(double width, int Split = 4)
         {
             foreach (var old in gridLines)
             {
@@ -93,21 +119,37 @@ namespace UFO
             }
             gridLines.Clear();
 
-            double offset = 100 * vertialRange;
-            DoubleCollection lineDash = new DoubleCollection(new double[] { 2, 1 }); // 破線の設定
+            double offset = 100 * verticalRange;
+            var lineDash = new DoubleCollection(new double[] { 3, 2 }); // 破線の設定
             for (int i = 0; i < Split + 1; i++)
             {
                 double rawLev = 200.0 / Split * i - 100;
-                double y = rawLev * vertialRange - offset;
-                var l = new Line() { X1 = 0, Y1 = y, X2 = width, Y2 = y, Stroke = Brushes.Gray, StrokeThickness = 1, StrokeDashArray = lineDash };
+                double y = rawLev * verticalRange - offset;
+
+                var l = new Line() { X1 = 0, Y1 = y, X2 = width, Y2 = y, Stroke = Brushes.DarkGray, StrokeThickness = 1 };
+
+                // 破線と実線
+                var dash = lineDash;
+                if ((Split / 2) % 2 != i % 2)
+                    l.StrokeDashArray = lineDash;
                 gridLines.Add(l);
             }
 
             gridLines.ForEach(l => canvas.Children.Add(l));
         }
 
+        /// <summary>
+        /// ユーザーがグラフの再描画ボタンを押したとき
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
+            // 値を更新
+            double newVr;
+            if (double.TryParse(verticalRangeTextBox.Text, out newVr))
+                verticalRange = newVr;
+            // 描画
             SetGraph(MainWindow.Instance.dataList);
         }
     }

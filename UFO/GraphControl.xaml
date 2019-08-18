@@ -7,10 +7,14 @@
              mc:Ignorable="d" 
              Width="660" Height="400">
     <DockPanel>
-        <Button DockPanel.Dock="Top" HorizontalAlignment="Left" Padding="5,2" Margin="5,2" Click="LoadButton_Click">CSV読み込み</Button>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button HorizontalAlignment="Left" Padding="5,2" Margin="5,2" Click="LoadButton_Click">グラフリロード</Button>
+            <TextBlock TextAlignment="Center" VerticalAlignment="Center">高さ倍率</TextBlock>
+            <TextBox x:Name="verticalRangeTextBox" Width="40" VerticalContentAlignment="Center" TextAlignment="Center">-1.7</TextBox>
+            
+        </StackPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden">
-        <Canvas x:Name="canvas">
-            <Line x:Name="centerLine" X1="5" Y1="200" X2="655" Y2="200" Stroke="Gray" StrokeThickness="2"/>
+            <Canvas x:Name="canvas">
             </Canvas>
         </ScrollViewer>
     </DockPanel>
