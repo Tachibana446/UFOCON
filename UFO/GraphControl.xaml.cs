@@ -30,12 +30,18 @@ namespace UFO
         private List<Line> gridLines = new List<Line>();
 
         /// <summary>
+        /// 一度グラフを描画したか　してないときMainWindows側で描画SetGraphを呼び出す
+        /// </summary>
+        public bool isSetGraph = false;
+
+        /// <summary>
         /// グラフを生成
         /// </summary>
         /// <param name="data"></param>
         /// <param name="isSorted"></param>
         public void SetGraph(List<MainWindow.Data> data, bool isSorted = true)
         {
+            isSetGraph = true;
             // 未ソートならソート
             if (!isSorted)
             {

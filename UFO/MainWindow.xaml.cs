@@ -61,6 +61,9 @@ namespace UFO
         /// <param name="filepath"></param>
         private void LoadCSV(string filepath)
         {
+            dataList.Clear(); // 以前のデータをクリア
+            graphControl.isSetGraph = false; // グラフを書き直す必要がある
+
             foreach (var line in File.ReadLines(filepath))
             {
                 var cols = line.Split(',');
@@ -123,6 +126,20 @@ namespace UFO
                 Direction = direction;
                 Level = level;
             }
+        }
+
+        /// <summary>
+        /// タブの変更イベント
+        /// グラフのタブに切り替わったときグラフを読み込む
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var tabcontrol = sender as TabControl;
+            // タブがグラフのタブかつまだ描画されてないとき
+            if (!graphControl.isSetGraph && tabcontrol.SelectedIndex == 2)
+                graphControl.SetGraph(dataList);
         }
     }
 }

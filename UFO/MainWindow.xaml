@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:UFO"
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="700">
-    <TabControl>
+    <TabControl SelectionChanged="TabControl_SelectionChanged">
         <TabItem Header="メイン">
             <DockPanel>
                 <GroupBox Header="音声" HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Padding="30,10" Margin="5">
@@ -35,7 +35,7 @@
             <local:PortSelectControl />
         </TabItem>
         <TabItem Header="グラフ">
-            <local:GraphControl />
+            <local:GraphControl x:Name="graphControl"/>
         </TabItem>
     </TabControl>
 </Window>
