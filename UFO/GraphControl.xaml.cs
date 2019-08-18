@@ -59,7 +59,7 @@ namespace UFO
         /// <summary>
         /// グラフ描画用の縦の位置オフセット
         /// </summary>
-        private double offset { get { return 100 * verticalRange; } }
+        private double offset { get { return 100 * Math.Abs(verticalRange); } }
         #endregion
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace UFO
             foreach (var d in data)
             {
                 double x = d.Time / horizonRange;
-                double y = d.Level * (d.Direction == 0 ? 1 : -1) * verticalRange - offset;
+                double y = d.Level * (d.Direction == 0 ? 1 : -1) * verticalRange + offset;
                 var p1 = new Point(x, y);
 
                 if (first)
@@ -119,12 +119,12 @@ namespace UFO
             }
             gridLines.Clear();
 
-            double offset = 100 * verticalRange;
+            double offset = 100 * Math.Abs(verticalRange);
             var lineDash = new DoubleCollection(new double[] { 3, 2 }); // 破線の設定
             for (int i = 0; i < Split + 1; i++)
             {
                 double rawLev = 200.0 / Split * i - 100;
-                double y = rawLev * verticalRange - offset;
+                double y = rawLev * verticalRange + offset;
 
                 var l = new Line() { X1 = 0, Y1 = y, X2 = width, Y2 = y, Stroke = Brushes.DarkGray, StrokeThickness = 1 };
 
