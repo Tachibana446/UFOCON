@@ -59,7 +59,7 @@ namespace UFO
                 if (value != _verticalRange)
                 {
                     _verticalRange = value;
-                    verticalRangeTextBox.Text = value.ToString();
+                    verticalRangeSlider.Value = Math.Abs(value);
                 }
             }
         }
@@ -190,9 +190,7 @@ namespace UFO
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             // 値を更新
-            double newVr;
-            if (double.TryParse(verticalRangeTextBox.Text, out newVr))
-                verticalRange = newVr;
+            verticalRange = -1 * verticalRangeSlider.Value;
             // 描画
             SetGraph(MainWindow.Instance.dataList);
         }
