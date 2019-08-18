@@ -20,7 +20,8 @@
             <Button x:Name="playButton" Content="▶" HorizontalAlignment="Left" Margin="5"  VerticalAlignment="Top" Width="40" Height="41" Click="PlayButton_Click"/>
             <Button x:Name="add10secButton" Content="+10" HorizontalAlignment="Left"  Margin="5"  VerticalAlignment="Top" Width="40" Height="41" Click="Add10secButton_Click"/>
         </StackPanel>
-        <TextBlock x:Name="playTimeText" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"><Run Text="00:00"/><LineBreak/><Run/></TextBlock>
+        <TextBlock x:Name="playTimeText" HorizontalAlignment="Left"  TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"
+                     FontSize="16"><Run Text="00:00"/><Run/></TextBlock>
 
     </StackPanel>
 </UserControl>
