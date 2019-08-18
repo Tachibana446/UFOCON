@@ -134,11 +134,17 @@ namespace UFO
         /// 現在時刻を更新し、その位置に線を表示する
         /// </summary>
         /// <param name="position"></param>
-        public void SetPosition(TimeSpan position, bool? playerIsPlaying)
+        public void SetPosition(TimeSpan position, bool playerIsPaused)
         {
             double nowTime = position.TotalSeconds * 10;
             double x = nowTime / horizonRange;
             positionLine.X1 = positionLine.X2 = x;
+            // 再生中は線の位置まで自動でスクロール
+            if (!playerIsPaused && !double.IsNaN(canvas.Width))
+            {
+                double nowRatio = x / canvas.Width;
+                scrollViewer.ScrollToHorizontalOffset(nowRatio * scrollViewer.ScrollableWidth);
+            }
         }
 
         /// <summary>

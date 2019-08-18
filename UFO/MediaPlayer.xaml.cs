@@ -25,6 +25,11 @@ namespace UFO
         public System.Windows.Media.MediaPlayer player = new System.Windows.Media.MediaPlayer();
 
         /// <summary>
+        /// 現在停止中かどうか
+        /// </summary>
+        public bool isPaused { get; private set; } = true;
+
+        /// <summary>
         /// 再生時刻を表示するタイマー
         /// </summary>
         private DispatcherTimer mediaPositionTimer = null;
@@ -35,7 +40,7 @@ namespace UFO
         /// <summary>
         /// グラフの位置を更新するタイマー
         /// </summary>
-        private DispatcherTimer graphPositionTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
+        private DispatcherTimer graphPositionTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(50) };
 
         /// <summary>
         /// Slider_ValueChangedイベントがユーザーの手で起こされたものかコード上起こされたものか判別する
@@ -61,7 +66,7 @@ namespace UFO
         {
             if (player.NaturalDuration.HasTimeSpan)
             {
-                MainWindow.Instance.graphControl.SetPosition(player.Position, player.Clock?.IsPaused);
+                MainWindow.Instance.graphControl.SetPosition(player.Position, isPaused);
             }
         }
 
@@ -121,14 +126,26 @@ namespace UFO
             playTimeText.Text = text;
         }
 
+        /// <summary>
+        /// 再生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             player.Play();
+            isPaused = false;
         }
 
+        /// <summary>
+        /// 一時停止
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
             player.Pause();
+            isPaused = true;
             PortUtil.Instance.SendStop();
         }
 
