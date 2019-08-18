@@ -86,7 +86,7 @@ namespace UFO
         /// <param name="value">0 ~ 100</param>
         public void SendData(bool direction, int value)
         {
-            if (!Port.IsOpen)
+            if (Port == null || !Port.IsOpen)
                 return;
 
             if (value > 100)
@@ -118,7 +118,7 @@ namespace UFO
         public void Close()
         {
             SendStop();
-            Port.Close();
+            Port?.Close();
         }
     }
 }

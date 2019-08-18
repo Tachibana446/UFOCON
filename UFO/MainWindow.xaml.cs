@@ -22,8 +22,12 @@ namespace UFO
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Instance = null;
+
         public MainWindow()
         {
+            if (Instance == null) Instance = this;
+
             InitializeComponent();
             this.Closing += (s, e) => PortUtil.Instance.Close();
             stopButton.Click += (s, e) => PortUtil.Instance.SendData(true, 0);
@@ -43,7 +47,7 @@ namespace UFO
         /// <summary>
         /// CSVデータ一覧
         /// </summary>
-        private List<Data> dataList = new List<Data>();
+        public List<Data> dataList { get; private set; } = new List<Data>();
         /// <summary>
         /// 前回のタイマー実行時に参照した時間
         /// </summary>
@@ -108,7 +112,7 @@ namespace UFO
         /// <summary>
         /// 時間・方向・強さを表す構造体
         /// </summary>
-        struct Data
+        public struct Data
         {
             public int Time;
             public int Direction;

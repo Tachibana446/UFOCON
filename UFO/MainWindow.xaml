@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UFO"
         mc:Ignorable="d"
-        Title="MainWindow" Height="433" Width="800">
+        Title="MainWindow" Height="480" Width="700">
     <TabControl>
         <TabItem Header="メイン">
             <DockPanel>
@@ -33,6 +33,9 @@
         </TabItem>
         <TabItem Header="シリアルポート">
             <local:PortSelectControl />
+        </TabItem>
+        <TabItem Header="グラフ">
+            <local:GraphControl />
         </TabItem>
     </TabControl>
 </Window>
