@@ -126,6 +126,8 @@ namespace UFO
             SetGridLines(prev.X + 5);
             SetTimeGrid();
             // 現在時の線の高さ
+            positionCanvas.Width = parentCanvas.Width = canvas.Width;
+            positionCanvas.Height = parentCanvas.Height = canvas.Height;
             positionLine.Y1 = 5;
             positionLine.Y2 = Math.Abs(verticalRange) * 200 - 5;
         }

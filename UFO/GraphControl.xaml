@@ -15,8 +15,12 @@
             <Slider x:Name="horizonRangeSlider" Width="80" Value="1" Minimum="0.1" Maximum="1" TickFrequency="0.1" TickPlacement="BottomRight" SmallChange="0.05" LargeChange="0.1" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True"/>
         </StackPanel>
         <ScrollViewer x:Name="scrollViewer" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
-            <Canvas x:Name="canvas">
-                <Line x:Name="positionLine" X1="10" X2="10" Y1="5" Y2="300" Stroke="Blue" StrokeThickness="2"/>
+            <Canvas x:Name="parentCanvas">
+                <Canvas x:Name="canvas">
+                </Canvas>
+                <Canvas x:Name="positionCanvas">
+                    <Line x:Name="positionLine" X1="10" X2="10" Y1="5" Y2="300" Stroke="Blue" StrokeThickness="2"/>
+                </Canvas>
             </Canvas>
         </ScrollViewer>
     </DockPanel>
