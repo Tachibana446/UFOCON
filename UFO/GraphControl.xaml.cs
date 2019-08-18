@@ -28,6 +28,14 @@ namespace UFO
 
         private Polyline polyline = new Polyline() { Stroke = Brushes.Red, StrokeThickness = 2 };
         private List<Line> gridLines = new List<Line>();
+        /// <summary>
+        /// 時間目盛りの線
+        /// </summary>
+        private List<Line> timeGridLines = new List<Line>();
+        /// <summary>
+        /// 時間目盛りの文字
+        /// </summary>
+        private List<TextBlock> timeGridTexts = new List<TextBlock>();
 
         #region グラフの大きさに関わる変数
         /// <summary>
@@ -104,6 +112,7 @@ namespace UFO
             }
             canvas.Width = prev.X + 5;
             SetGridLines(prev.X + 5);
+            SetTimeGrid();
         }
 
         /// <summary>
@@ -136,6 +145,41 @@ namespace UFO
             }
 
             gridLines.ForEach(l => canvas.Children.Add(l));
+        }
+
+        /// <summary>
+        /// 時間軸の目盛り(10s刻み)を表示する
+        /// </summary>
+        private void SetTimeGrid()
+        {
+            timeGridLines.ForEach(l => canvas.Children.Remove(l));
+            timeGridLines.Clear();
+            timeGridTexts.ForEach(t => canvas.Children.Remove(t));
+            timeGridTexts.Clear();
+
+            double y = Math.Abs(verticalRange) * 200 + 5;
+            canvas.Height = y + 23;
+
+            // 何pxごとに数字を表示すればいいか
+            double interval = 100 / horizonRange;
+
+            for (int i = 0; i < canvas.Width / interval; i++)
+            {
+                var l = new Line() { X1 = interval * i, X2 = interval * i, Y1 = y, Y2 = y + 5, Stroke = Brushes.DarkGray, StrokeThickness = 2 };
+                var t = new TextBlock() { Text = formatTime(i * 10), FontSize = 12, TextAlignment = TextAlignment.Center };
+                Canvas.SetLeft(t, interval * i - 22);
+                Canvas.SetTop(t, y + 6);
+                canvas.Children.Add(l);
+                canvas.Children.Add(t);
+                timeGridLines.Add(l);
+                timeGridTexts.Add(t);
+            }
+        }
+
+        static string formatTime(int second)
+        {
+            TimeSpan span = TimeSpan.FromSeconds(second);
+            return span.ToString(@"hh\:mm\:ss");
         }
 
         /// <summary>

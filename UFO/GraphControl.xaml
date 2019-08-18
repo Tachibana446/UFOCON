@@ -13,7 +13,7 @@
             <TextBox x:Name="verticalRangeTextBox" Width="40" VerticalContentAlignment="Center" TextAlignment="Center">-1.7</TextBox>
             
         </StackPanel>
-        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
             <Canvas x:Name="canvas">
             </Canvas>
         </ScrollViewer>
