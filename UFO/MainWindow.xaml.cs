@@ -100,7 +100,7 @@ namespace UFO
         /// <param name="e"></param>
         private void CsvTimer_Tick(object sender, EventArgs e)
         {
-            double nowTime = mediaPlayer.player.Position.TotalSeconds * 10;
+            double nowTime = MediaPlayer.player.Position.TotalSeconds * 10;
             // 巻き戻されていた場合何もしない
             if (lastTime > nowTime)
             {

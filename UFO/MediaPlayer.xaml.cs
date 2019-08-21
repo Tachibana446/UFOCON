@@ -18,11 +18,11 @@ using Microsoft.Win32;
 namespace UFO
 {
     /// <summary>
-    /// MediaPlayer.xaml の相互作用ロジック
+    /// 音声再生用のUI
     /// </summary>
     public partial class MediaPlayer : UserControl
     {
-        public System.Windows.Media.MediaPlayer player = new System.Windows.Media.MediaPlayer();
+        public static System.Windows.Media.MediaPlayer player = new System.Windows.Media.MediaPlayer();
 
         /// <summary>
         /// 現在停止中かどうか
@@ -82,6 +82,7 @@ namespace UFO
             {
                 slider.Maximum = player.NaturalDuration.TimeSpan.TotalMilliseconds;
                 slider.IsEnabled = true;
+                
                 sliderPostionTimer = new DispatcherTimer();
                 sliderPostionTimer.Interval = TimeSpan.FromMilliseconds(100);
                 sliderPostionTimer.Tick += (_s, _e) =>
@@ -101,6 +102,8 @@ namespace UFO
             {
                 filePath.Text = dialog.FileName;
 
+                if (player.Source != null)
+                    player.Close();
                 player.Open(new Uri(filePath.Text, UriKind.Absolute));
 
                 // 稼働中のタイマーを停止
