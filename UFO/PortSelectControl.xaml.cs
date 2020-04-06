@@ -49,7 +49,7 @@ namespace UFO
         /// <param name="e"></param>
         private void SetPortButton_Click(object sender, RoutedEventArgs e)
         {
-            PortUtil.Instance.SetPort(portListCombobox.SelectedItem.ToString().Trim());
+            PortUtil.Instance.SetPort(portListCombobox.SelectedItem?.ToString().Trim());
             SetPortNameTextBlock();
         }
 

@@ -10,7 +10,7 @@
     <Grid>
         <DockPanel>
             <Label x:Name="label" DockPanel.Dock="Left" VerticalAlignment="Center">最小時間</Label>
-            <Label HorizontalAlignment="Right" DockPanel.Dock="Right" VerticalAlignment="Center">秒</Label>
+            <Label x:Name="unitLabel" HorizontalAlignment="Right" DockPanel.Dock="Right" VerticalAlignment="Center">秒</Label>
             <TextBox x:Name="textBox" DockPanel.Dock="Right" VerticalAlignment="Center" HorizontalAlignment="Center" Width="40" MinHeight="18"
                         VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="0" LostFocus="TextBox_LostFocus" Margin="5,0"/>
             <Slider x:Name="slider" MinWidth="50" HorizontalAlignment="Stretch" TickPlacement="BottomRight" 

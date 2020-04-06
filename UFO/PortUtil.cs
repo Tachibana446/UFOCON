@@ -59,6 +59,7 @@ namespace UFO
         /// <param name="portName">COM5とか</param>
         public void SetPort(string portName)
         {
+            if (portName == null) return;
             this.portName = portName;
             Port.Close();
             Port = new SerialPort(portName, 19200, Parity.None, 8, StopBits.One);

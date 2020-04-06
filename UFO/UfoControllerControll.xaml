@@ -15,7 +15,10 @@
             <StackPanel>
                 <Label>現在の状態</Label>
                 <TextBlock x:Name="viewNowPatternLabel">_</TextBlock>
+                <TextBlock x:Name="viewNowPowerLabel">_</TextBlock>
                 <Button x:Name="onOffButton" Padding="2,10" Margin="2" Click="OnOffButton_Click">▶</Button>
+                <Label>↓たまに止まらないことがあるのでその時用</Label>
+                <Button Padding="2,10  " Margin="2" Click="Button_Click" >停止</Button>
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Column="0">
@@ -24,6 +27,8 @@
                 <local:SliderAndTextCtrl x:Name="maxSpanSlider"/>
                 <local:SliderAndTextCtrl x:Name="minBreakSpanSlider"/>
                 <local:SliderAndTextCtrl x:Name="maxBreakSpanSlider"/>
+                <local:SliderAndTextCtrl x:Name="minPowerSlider"/>
+                <local:SliderAndTextCtrl x:Name="maxPowerSlider"/>
             </StackPanel>
         </GroupBox>
     </Grid>

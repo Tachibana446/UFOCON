@@ -35,8 +35,6 @@ namespace UFO
         /// </summary>
         int minTimeSpan { get { return (int)(minSpanSlider.slider.Value * 1000); } }
         int maxTimeSpan { get { return (int)(maxSpanSlider.slider.Value * 1000); } }
-        int minPower = 0;
-        int maxPower = 100;
         int nowPower = 0;
         /// <summary>
         /// 徐々に変化する系のパターンだったときの毎Tickの変化量
@@ -77,9 +75,18 @@ namespace UFO
             maxBreakSpanSlider.slider.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.TopLeft;
             maxBreakSpanSlider.slider.Value = 3;
             maxBreakSpanSlider.LabelText = "最大停止時間";
+
+            maxPowerSlider.slider.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.TopLeft;
+            maxPowerSlider.slider.Maximum = 100; maxPowerSlider.slider.Value = 80;
+            maxPowerSlider.slider.TickFrequency = 10; maxPowerSlider.slider.SmallChange = 10; maxPowerSlider.slider.LargeChange = 10;
+            maxPowerSlider.LabelText = "最大パワー"; maxPowerSlider.unitLabel.Content = "％";
+            minPowerSlider.slider.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight;
+            minPowerSlider.slider.Maximum = 100; minPowerSlider.slider.Value = 0;
+            minPowerSlider.slider.TickFrequency = 10; minPowerSlider.slider.SmallChange = 10; minPowerSlider.slider.LargeChange = 10;
+            minPowerSlider.LabelText = "最小パワー"; minPowerSlider.unitLabel.Content = "％";
         }
 
-       
+
 
         private void StartRandom()
         {
@@ -106,6 +113,8 @@ namespace UFO
         {
             var timer = sender as System.Windows.Threading.DispatcherTimer;
             timer?.Stop();
+            if (IsPaused)
+                return;
             if (patterns.Count() <= 1)
                 return;
             // パターン決定
@@ -120,6 +129,7 @@ namespace UFO
             else
                 span = rand.Next(minTimeSpan, maxTimeSpan);
             // パワー決定
+            int minPower = (int)minPowerSlider.slider.Value; int maxPower = (int)maxPowerSlider.slider.Value;
             nowPower = rand.Next(minPower, maxPower);
             // 徐々に変化する系だったときの変化量算出
             if (nowPattern == Pattern.cresc)
@@ -132,16 +142,28 @@ namespace UFO
                 nowPower = maxPower;
                 crescPower = (minPower - maxPower) / (span / 50);
             }
+            // STACパターンの方向を決定
+            stacDirection = rand.Next() % 2 == 0;
             // 表示
-            viewNowPatternLabel.Text = $"{nowPattern}:{span / 1000.0}";
+            viewNowPatternLabel.Text = $"パターン:{patternStr[(int)nowPattern]} - {span}秒";
             // 指定の時間になったらまたパターンを決める
             if (timer != null)
                 timer.Interval = TimeSpan.FromMilliseconds(span);
             timer?.Start();
         }
 
+        /// <summary>
+        /// STACパターン用 最後に回転した時間
+        /// </summary>
         DateTime stacLastChanged = DateTime.Now;
-        int stacLastDirection = 0;
+        /// <summary>
+        /// STACパターン用 最後に停止だったか回転だったか
+        /// </summary>
+        int stacLastOnOff = 0;
+        /// <summary>
+        /// STACパターン用 ランダムな方向
+        /// </summary>
+        bool stacDirection;
 
         /// <summary>
         /// 一定時間ごとに現在のパターンをUFOに送信
@@ -150,47 +172,55 @@ namespace UFO
         /// <param name="e"></param>
         private void SendUfoTimer_Tick(object sender, EventArgs e)
         {
+            Console.WriteLine("SendUfoTimer_Tick");
             if (IsPaused)
-                return;
-            switch (nowPattern)
             {
-                case Pattern.flat:
-                    PortUtil.Instance.SendData(true, nowPower);
-                    break;
-                case Pattern.reverse:
-                    PortUtil.Instance.SendData(false, nowPower);
-                    break;
-                case Pattern.cresc:
-                    PortUtil.Instance.SendData(true, nowPower);
-                    nowPower = (int)(nowPower + crescPower);
-                    break;
-                case Pattern.decresc:
-                    PortUtil.Instance.SendData(false, nowPower);
-                    nowPower = (int)(nowPower + crescPower);
-                    break;
-                case Pattern.stac:
-                    var delta = (DateTime.Now - stacLastChanged).TotalMilliseconds;
-                    if(delta >= 1000)
-                    {
-                        stacLastChanged = DateTime.Now;
-                        if (stacLastDirection == 0)
-                        {
-                            stacLastDirection = 1;
-                            PortUtil.Instance.SendData(true, nowPower);
-                        }
-                        else
-                        {
-                            PortUtil.Instance.SendStop();
-                            stacLastDirection = 0;
-                        }
-                    }
-                    break;
-                case Pattern.rest:
-                    PortUtil.Instance.SendStop();
-                    break;
-                default:
-                    break;
+                PortUtil.Instance.SendStop();
+                var t = sender as DispatcherTimer;
+                t?.Stop();
             }
+            else
+                switch (nowPattern)
+                {
+                    case Pattern.flat:
+                        PortUtil.Instance.SendData(true, nowPower);
+                        break;
+                    case Pattern.reverse:
+                        PortUtil.Instance.SendData(false, nowPower);
+                        break;
+                    case Pattern.cresc:
+                        PortUtil.Instance.SendData(true, nowPower);
+                        nowPower = (int)(nowPower + crescPower);
+                        break;
+                    case Pattern.decresc:
+                        PortUtil.Instance.SendData(false, nowPower);
+                        nowPower = (int)(nowPower + crescPower);
+                        break;
+                    case Pattern.stac:
+                        var delta = (DateTime.Now - stacLastChanged).TotalMilliseconds;
+                        if (delta >= 200)
+                        {
+                            stacLastChanged = DateTime.Now;
+                            if (stacLastOnOff == 0)
+                            {
+                                stacLastOnOff = 1;
+                                PortUtil.Instance.SendData(true, nowPower);
+                            }
+                            else
+                            {
+                                PortUtil.Instance.SendStop();
+                                stacLastOnOff = 0;
+                            }
+                        }
+                        break;
+                    case Pattern.rest:
+                        PortUtil.Instance.SendStop();
+                        break;
+                    default:
+                        break;
+                }
+
+            viewNowPowerLabel.Text = $"強さ：{nowPower}％";
         }
 
         /// <summary>
@@ -198,11 +228,13 @@ namespace UFO
         /// </summary>
         public void Stop()
         {
-            sendUfoTimer.Stop();
-            setPatternTimer.Stop();
-            PortUtil.Instance.SendStop();
+            nowPower = 0;
+            nowPattern = Pattern.rest;
             viewNowPatternLabel.Text = "停止";
             IsPaused = true;
+            PortUtil.Instance.SendStop();
+            PortUtil.Instance.SendStop();
+            PortUtil.Instance.SendStop();
             onOffButton.Content = "▶";
         }
         /// <summary>
@@ -236,6 +268,8 @@ namespace UFO
             rest,
         }
 
+        string[] patternStr = new string[] { "正回転", "逆回転", "増幅", "減少", "小刻みに", "一時停止" };
+
         /// <summary>
         /// On/Offを切り替える
         /// </summary>
@@ -251,6 +285,11 @@ namespace UFO
             {
                 Stop();
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Stop();
         }
     }
 }
