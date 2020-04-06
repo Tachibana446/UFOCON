@@ -112,8 +112,12 @@ namespace UFO
                 lastTime = nowTime;
                 return;
             }
-            Data data = dataList.LastOrDefault(d => d.Time > lastTime && d.Time <= nowTime);
-            PortUtil.Instance.SendData(data.Direction == 1, data.Level);
+            int index = dataList.FindLastIndex(d => d.Time <= nowTime);
+            if (index >= 0)
+            {
+                var data = dataList[index];
+                PortUtil.Instance.SendData(data.Direction == 1, data.Level);
+            }
             lastTime = nowTime;
         }
 
