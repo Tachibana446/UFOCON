@@ -37,6 +37,7 @@ namespace UFO
         /// </summary>
         private List<TextBlock> timeGridTexts = new List<TextBlock>();
 
+
         #region グラフの大きさに関わる変数
         /// <summary>
         /// 横方向の倍率 
@@ -126,6 +127,7 @@ namespace UFO
             SetGridLines(prev.X + 5);
             SetTimeGrid();
             // 現在時の線の高さ
+            isScrollByCode = true;
             positionCanvas.Width = parentCanvas.Width = canvas.Width;
             positionCanvas.Height = parentCanvas.Height = canvas.Height;
             positionLine.Y1 = 5;
@@ -142,9 +144,10 @@ namespace UFO
             double x = nowTime / horizonRange;
             positionLine.X1 = positionLine.X2 = x;
             // 再生中は線の位置まで自動でスクロール
-            if (!playerIsPaused && !double.IsNaN(canvas.Width))
+            if (!playerIsPaused && !double.IsNaN(canvas.Width) && isAutoScroll.IsChecked == true)
             {
                 double nowRatio = x / canvas.Width;
+                isScrollByCode = true;
                 scrollViewer.ScrollToHorizontalOffset(nowRatio * scrollViewer.ScrollableWidth);
             }
         }
@@ -228,6 +231,29 @@ namespace UFO
             horizonRange = horizonRangeSlider.Value;
             // 描画
             SetGraph(MainWindow.Instance.dataList);
+        }
+
+
+        /// <summary>
+        /// コードからスクロールバーをいじったか
+        /// </summary>
+        bool isScrollByCode = false;
+        /// <summary>
+        /// ユーザーが自分でスクロール位置を変更したときは自動スクロールをオフにする
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void scrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (isScrollByCode)
+            {
+                isScrollByCode = false;
+                return;
+            }
+            else
+            {
+                isAutoScroll.IsChecked = false;
+            }
         }
     }
 }
