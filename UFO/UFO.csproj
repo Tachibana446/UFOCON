@@ -61,6 +61,9 @@
     <Compile Include="UfoControllerControll.xaml.cs">
       <DependentUpon>UfoControllerControll.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UsageCtrl.xaml.cs">
+      <DependentUpon>UsageCtrl.xaml</DependentUpon>
+    </Compile>
     <Page Include="GraphControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -93,6 +96,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UfoControllerControll.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UsageCtrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

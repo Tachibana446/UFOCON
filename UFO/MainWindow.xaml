@@ -40,5 +40,8 @@
         <TabItem Header="ランダム">
             <local:UfoControllerControll x:Name="randomPlayControll"/>
         </TabItem>
+        <TabItem Header="使い方">
+            <local:UsageCtrl />
+        </TabItem>
     </TabControl>
 </Window>
