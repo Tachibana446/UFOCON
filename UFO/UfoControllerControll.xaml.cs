@@ -33,8 +33,8 @@ namespace UFO
         /// <summary>
         /// パターンが実行する最小の時間
         /// </summary>
-        int minTimeSpan = 1000;
-        int maxTimeSpan = 5000;
+        int minTimeSpan { get { return (int)(minSpanSlider.slider.Value * 1000); } }
+        int maxTimeSpan { get { return (int)(maxSpanSlider.slider.Value * 1000); } }
         int minPower = 0;
         int maxPower = 100;
         int nowPower = 0;
@@ -45,8 +45,8 @@ namespace UFO
         /// <summary>
         /// 最小の休憩時間(ms)
         /// </summary>
-        int minBreakSpan = 1000;
-        int maxBreakSpan = 3000;
+        int minBreakSpan { get { return (int)(minBreakSpanSlider.slider.Value * 1000); } }
+        int maxBreakSpan { get { return (int)(maxBreakSpanSlider.slider.Value * 1000); } }
         /// <summary>
         /// パターンを決めるタイマー
         /// </summary>
@@ -66,17 +66,20 @@ namespace UFO
             patterns = new List<Pattern>(_patternsEnumerable);
             sendUfoTimer.Tick += SendUfoTimer_Tick;
             InitializeComponent();
+
+            minSpanSlider.slider.Value = 1;
+            minSpanSlider.LabelText = "最小時間";
+            maxSpanSlider.slider.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.TopLeft;
+            maxSpanSlider.slider.Value = 5;
+            maxSpanSlider.LabelText = "最大時間";
+            minBreakSpanSlider.slider.Value = 1;
+            minBreakSpanSlider.LabelText = "最小停止時間";
+            maxBreakSpanSlider.slider.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.TopLeft;
+            maxBreakSpanSlider.slider.Value = 3;
+            maxBreakSpanSlider.LabelText = "最大停止時間";
         }
 
-        /// <summary>
-        /// スタートボタンクリック
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            StartRandom();
-        }
+       
 
         private void StartRandom()
         {
@@ -91,6 +94,7 @@ namespace UFO
 
             sendUfoTimer.Start();
             IsPaused = false;
+            onOffButton.Content = "■";
         }
 
         /// <summary>
@@ -189,10 +193,6 @@ namespace UFO
             }
         }
 
-        private void StopButton_Click(object sender, RoutedEventArgs e)
-        {
-            Stop();
-        }
         /// <summary>
         /// 全タイマー・UFOを停止
         /// </summary>
@@ -201,7 +201,9 @@ namespace UFO
             sendUfoTimer.Stop();
             setPatternTimer.Stop();
             PortUtil.Instance.SendStop();
+            viewNowPatternLabel.Text = "停止";
             IsPaused = true;
+            onOffButton.Content = "▶";
         }
         /// <summary>
         /// 動きのパターン
@@ -234,5 +236,21 @@ namespace UFO
             rest,
         }
 
+        /// <summary>
+        /// On/Offを切り替える
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnOffButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsPaused)
+            {
+                StartRandom();
+            }
+            else
+            {
+                Stop();
+            }
+        }
     }
 }
