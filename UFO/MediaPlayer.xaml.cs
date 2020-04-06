@@ -141,6 +141,15 @@ namespace UFO
         }
 
         /// <summary>
+        /// 外部から止めたいとき
+        /// </summary>
+        public void Stop()
+        {
+            changeSliderByCode = true;
+            PauseButton_Click(this, new RoutedEventArgs());
+        }
+
+        /// <summary>
         /// 一時停止
         /// </summary>
         /// <param name="sender"></param>

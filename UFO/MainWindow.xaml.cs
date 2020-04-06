@@ -53,6 +53,9 @@ namespace UFO
         /// </summary>
         private double lastTime = 0;
 
+        /// <summary>
+        /// csvを参照して現在の再生位置の動作を実行するためのタイマー
+        /// </summary>
         private System.Windows.Threading.DispatcherTimer csvTimer = new System.Windows.Threading.DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(50) };
 
         /// <summary>
@@ -100,6 +103,8 @@ namespace UFO
         /// <param name="e"></param>
         private void CsvTimer_Tick(object sender, EventArgs e)
         {
+            if (mediaPlayer.isPaused)
+                return;
             double nowTime = MediaPlayer.player.Position.TotalSeconds * 10;
             // 巻き戻されていた場合何もしない
             if (lastTime > nowTime)
@@ -140,6 +145,21 @@ namespace UFO
             // タブがグラフのタブかつまだ描画されてないとき
             if (!graphControl.isSetGraph && tabcontrol.SelectedIndex == 2)
                 graphControl.SetGraph(dataList);
+        }
+
+        /// <summary>
+        /// 音声再生・UFO動作を停止
+        /// </summary>
+        public void AllStop()
+        {
+            PortUtil.Instance.SendStop();
+            mediaPlayer.Stop();
+            randomPlayControll.Stop();
+        }
+
+        private void stopButton_Click(object sender, RoutedEventArgs e)
+        {
+            AllStop();
         }
     }
 }
