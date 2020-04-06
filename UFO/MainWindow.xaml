@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="700">
     <TabControl SelectionChanged="TabControl_SelectionChanged">
+        <TabItem Header="CSV">
+            <local:CsvCreateCtrl/>
+        </TabItem>
         <TabItem Header="メイン">
             <DockPanel>
                 <GroupBox Header="音声" HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Padding="30,10" Margin="5">

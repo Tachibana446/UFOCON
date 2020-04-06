@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CsvCreateCtrl.xaml.cs">
+      <DependentUpon>CsvCreateCtrl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SliderAndTextCtrl.xaml.cs">
       <DependentUpon>SliderAndTextCtrl.xaml</DependentUpon>
     </Compile>
@@ -64,6 +67,10 @@
     <Compile Include="UsageCtrl.xaml.cs">
       <DependentUpon>UsageCtrl.xaml</DependentUpon>
     </Compile>
+    <Page Include="CsvCreateCtrl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GraphControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

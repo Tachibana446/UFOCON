@@ -34,7 +34,14 @@ namespace UFO
             PortUtil.Instance.FindPort();
         }
 
-        private void CSVFileOpenButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// CSVを開くボタンを押したときのイベント
+        /// 
+        /// CSV編集タブでもこのイベントを使う
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void CSVFileOpenButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
             dialog.Filter = "csv files (*.csv)|*.csv|All files (*.*)|*.*";
@@ -43,6 +50,11 @@ namespace UFO
                 LoadCSV(dialog.FileName);
             }
         }
+
+        /// <summary>
+        /// ロードしたCSVファイルのフルパス
+        /// </summary>
+        public string loadedCsvFullPath;
 
         /// <summary>
         /// CSVデータ一覧
@@ -86,6 +98,7 @@ namespace UFO
             if (dataList.Count > 0)
             {
                 CSVFilePathText.Text = System.IO.Path.GetFileName(filepath);
+                loadedCsvFullPath = filepath;
             }
             // 時間順にソート
             dataList.Sort((a, b) => a.Time - b.Time);
@@ -124,11 +137,11 @@ namespace UFO
         /// <summary>
         /// 時間・方向・強さを表す構造体
         /// </summary>
-        public struct Data
+        public class Data
         {
-            public int Time;
-            public int Direction;
-            public int Level;
+            public int Time { get; set; }
+            public int Direction { get; set; }
+            public int Level { get; set; }
             public Data(int time, int direction, int level)
             {
                 Time = time;
