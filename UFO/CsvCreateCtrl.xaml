@@ -17,9 +17,7 @@
             <Button x:Name="openCsvButton">CSVファイル読み込み</Button>
             <Label />
             <Button x:Name="saveCsvButton" Click="SaveCSVButton_Click" >CSVファイルを保存</Button>
-            <ScrollViewer>
-                <TextBox x:Name="logTextbox" MinLines="4" MaxLines="8" TextWrapping="Wrap"/>
-            </ScrollViewer>
+            <TextBox x:Name="logTextbox" MinLines="4" MaxLines="8" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"/>
             <GroupBox Margin="2,5">
                 <StackPanel MinWidth="380">
                     <CheckBox x:Name="timeIsNowPlaytime_checkbox" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0" Checked="timeIsNowPlaytime_checkbox_Checked" Unchecked="timeIsNowPlaytime_checkbox_Unchecked">再生時刻にセット</CheckBox>
@@ -44,7 +42,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
                     <Label VerticalAlignment="Center">現在選択している行の</Label>
                     <Button Padding="10,5" Margin="5,0" Background="#FFE81500" Foreground="White" VerticalAlignment="Center" Click="RemoveDataButton_Click" >データを削除</Button>
-                    <Button Padding="10,5" Margin="5,0" VerticalAlignment="Center" >
+                    <Button Padding="10,5" Margin="5,0" VerticalAlignment="Center" Click="UndoRemoveDataButton_Click" >
                         ↺取り消す
                     </Button>
                 </StackPanel>

@@ -176,6 +176,10 @@ namespace UFO
             {
                 return $"{Time},{Direction},{Level}";
             }
+            public string ToString()
+            {
+                return $"{Time}dsec,{Direction},{Level}%";
+            }
         }
 
         /// <summary>

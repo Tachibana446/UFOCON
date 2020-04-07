@@ -35,7 +35,7 @@ namespace UFO
         /// <summary>
         /// 削除したデータ（行）
         /// </summary>
-        private Stack<MainWindow.Data> removedData = new Stack<MainWindow.Data>();
+        private Stack<IEnumerable<MainWindow.Data>> removedData = new Stack<IEnumerable<MainWindow.Data>>();
 
         public CsvCreateCtrl()
         {
@@ -216,16 +216,36 @@ namespace UFO
         /// <param name="e"></param>
         private void RemoveDataButton_Click(object sender, RoutedEventArgs e)
         {
-            var selected = dataGrid.SelectedCells.Select(cell => cell.Item as MainWindow.Data).Where(d => d != null).Distinct();
+            List<DataGridCellInfo> cells = new List<DataGridCellInfo>(dataGrid.SelectedCells);
+            var selected = cells.Select(cell => cell.Item as MainWindow.Data).Where(d => d != null).Distinct();
             int n = selected.Count();
+            if (n <= 0) return;
+            removedData.Push(selected);
             foreach (var data in selected)
             {
-                if (data == null) continue;
-                removedData.Push(data);
                 Table.Remove(data);
             }
             logTextbox.Text = logTextbox.Text.Insert(0, $"{DateTime.Now.ToShortTimeString()} : データを{n}件削除\n");
             MainWindow.Instance.LoadEditedData();   // データとグラフを再読み込み
+        }
+
+        /// <summary>
+        /// 削除を取り消す
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UndoRemoveDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (removedData.Count() <= 0)
+                return;
+
+            var removed = removedData.Pop();
+            foreach (var data in removed)
+            {
+                Table.Add(data);
+            }
+            int n = removed.Count();
+            logTextbox.Text = logTextbox.Text.Insert(0, $"{DateTime.Now.ToShortTimeString()} : {n}件の削除をもとに戻しました。\n");
         }
     }
 }
