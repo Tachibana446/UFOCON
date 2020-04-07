@@ -112,6 +112,20 @@ namespace UFO
         }
 
         /// <summary>
+        /// CSV編集タブで編集したデータをロードする
+        /// </summary>
+        public void LoadEditedData()
+        {
+            dataList = new List<Data>(csvCreateCtrl.Table.OrderBy(d => d.Time));
+            graphControl.isSetGraph = false;
+            // タイマーを起動
+            csvTimer.Stop();
+            csvTimer = new System.Windows.Threading.DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(50) };
+            csvTimer.Tick += CsvTimer_Tick;
+            csvTimer.Start();
+        }
+
+        /// <summary>
         /// 50ミリ秒ごとに再生位置を参照し、前回から今回の間に指定されているコマンドのうち最後のものを実行する
         /// </summary>
         /// <param name="sender"></param>
@@ -174,7 +188,7 @@ namespace UFO
         {
             var tabcontrol = sender as TabControl;
             // タブがグラフのタブかつまだ描画されてないとき
-            if (!graphControl.isSetGraph && tabcontrol.SelectedIndex == 2)
+            if (!graphControl.isSetGraph && (tabcontrol.SelectedContent as GraphControl) != null)
                 graphControl.SetGraph(dataList);
         }
 

@@ -23,7 +23,7 @@ namespace UFO
     /// </summary>
     public partial class CsvCreateCtrl : UserControl
     {
-        ObservableCollection<MainWindow.Data> table = new ObservableCollection<MainWindow.Data>();
+        public ObservableCollection<MainWindow.Data> Table { get; private set; } = new ObservableCollection<MainWindow.Data>();
 
 
         public CsvCreateCtrl()
@@ -35,9 +35,9 @@ namespace UFO
             openCsvButton.Click += OpenCsvButton_Click;
 
             // 表のソースを配列に設定
-            dataGrid.ItemsSource = table;
+            dataGrid.ItemsSource = Table;
             // コレクションビューで時間でソート
-            var cView = CollectionViewSource.GetDefaultView(table);
+            var cView = CollectionViewSource.GetDefaultView(Table);
             cView.SortDescriptions.Add(new System.ComponentModel.SortDescription("Time", System.ComponentModel.ListSortDirection.Ascending));
 
         }
@@ -49,8 +49,8 @@ namespace UFO
         /// <param name="e"></param>
         public void OpenCsvButton_Click(object sender, RoutedEventArgs e)
         {
-            table = new ObservableCollection<MainWindow.Data>(MainWindow.Instance.dataList);
-            dataGrid.ItemsSource = table;
+            Table = new ObservableCollection<MainWindow.Data>(MainWindow.Instance.dataList);
+            dataGrid.ItemsSource = Table;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace UFO
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var r = new Random();
-            table.Add(new MainWindow.Data(r.Next(), r.Next(), 1));
+            Table.Add(new MainWindow.Data(r.Next(), r.Next(), 1));
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace UFO
         {
             using (var sw = new StreamWriter(newFilePath))
             {
-                foreach (var row in table.OrderBy(r => r.Time))
+                foreach (var row in Table.OrderBy(r => r.Time))
                 {
                     sw.WriteLine(row.ToCSV());
                 }
@@ -144,17 +144,26 @@ namespace UFO
             return f.FullName;
         }
 
+        /// <summary>
+        /// データ追加ボタンを押したとき、Tableにデータを追加
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddDataButton_Click(object sender, RoutedEventArgs e)
         {
             string timeStr = timeTextBox01.Text;
-            bool isReverse = isReverse_checkbox01.IsEnabled == true;
+            bool isReverse = isReverse_checkbox01.IsChecked == true;
             int power = (int)powerSlider01.Value;
 
             if (int.TryParse(timeStr, out int time))
             {
                 var newData = new MainWindow.Data(time, isReverse ? 1 : 0, power);
-                table.Add(newData);
+                Table.Add(newData);
             }
+
+            MainWindow.Instance.LoadEditedData();   // データとグラフを再読み込み
         }
+
+
     }
 }
