@@ -144,6 +144,13 @@ namespace UFO
             public int Time { get; set; }
             public int Direction { get; set; }
             public int Level { get; set; }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="time">デシ秒</param>
+            /// <param name="direction">0:正回転, 1:逆回転</param>
+            /// <param name="level">0～100（％）</param>
             public Data(int time, int direction, int level)
             {
                 Time = time;

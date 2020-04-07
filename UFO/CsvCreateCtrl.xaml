@@ -20,6 +20,26 @@
             <ScrollViewer>
                 <TextBox x:Name="logTextbox" MinLines="4" MaxLines="8" TextWrapping="Wrap"/>
             </ScrollViewer>
+            <GroupBox Margin="2,5">
+                <StackPanel MinWidth="380">
+                    <CheckBox x:Name="timeIsNowPlaytime_checkbox" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0">再生時刻にセット</CheckBox>
+                    <Label>出力（％）</Label>
+                    <Slider x:Name="powerSlider01" Maximum="100" SmallChange="10" LargeChange="10" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" TickPlacement="BottomRight" TickFrequency="10" 
+                            Value="{Binding ElementName=powerTextbox01, Path=Text}"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="timeTextBox01" MinWidth="45" Margin="5,0,0,0" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="18">0</TextBox>
+                        <Label VerticalAlignment="Bottom" HorizontalAlignment="Left">デシ秒</Label>
+                        <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
+                        <CheckBox x:Name="isReverse_checkbox01" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0">逆回転</CheckBox>
+                        <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
+                        <TextBox x:Name="powerTextbox01" MinWidth="45" Margin="5,0" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="18">0</TextBox>
+                        <Label FontSize="18">%</Label>
+                        <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
+                        <Button Padding="10, 5" FontSize="16" Background="#FF015FED" Foreground="White" Click="AddDataButton_Click">データを追加</Button>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
     </Grid>
 </UserControl>

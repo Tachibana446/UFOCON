@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UFO"
         mc:Ignorable="d"
-        Title="MainWindow" Height="480" Width="700">
+        Title="MainWindow" Height="480" Width="840">
     <TabControl SelectionChanged="TabControl_SelectionChanged">
         <TabItem Header="CSV">
             <local:CsvCreateCtrl x:Name="csvCreateCtrl"/>

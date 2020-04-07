@@ -143,5 +143,18 @@ namespace UFO
             }
             return f.FullName;
         }
+
+        private void AddDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            string timeStr = timeTextBox01.Text;
+            bool isReverse = isReverse_checkbox01.IsEnabled == true;
+            int power = (int)powerSlider01.Value;
+
+            if (int.TryParse(timeStr, out int time))
+            {
+                var newData = new MainWindow.Data(time, isReverse ? 1 : 0, power);
+                table.Add(newData);
+            }
+        }
     }
 }
