@@ -31,6 +31,7 @@ namespace UFO
             InitializeComponent();
             this.Closing += (s, e) => PortUtil.Instance.Close();
             stopButton.Click += (s, e) => PortUtil.Instance.SendData(true, 0);
+            CSVFileOpenButton.Click += csvCreateCtrl.OpenCsvButton_Click;
             PortUtil.Instance.FindPort();
         }
 
@@ -49,8 +50,6 @@ namespace UFO
             {
                 LoadCSV(dialog.FileName);
             }
-
-            csvCreateCtrl.OpenCsvButton_Click(sender, e);
         }
 
         /// <summary>

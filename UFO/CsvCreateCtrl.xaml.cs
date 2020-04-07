@@ -42,7 +42,7 @@ namespace UFO
             InitializeComponent();
 
             // CSVを開くボタンを押したらメインタブとこのタブの処理を行う
-            openCsvButton.Click += MainWindow.Instance.CSVFileOpenButton_Click;
+            openCsvButton.Click += (_s, _e) => MainWindow.Instance.CSVFileOpenButton_Click(_s, _e);
             openCsvButton.Click += OpenCsvButton_Click;
 
             // 表のソースを配列に設定
@@ -167,12 +167,14 @@ namespace UFO
         private void AddDataButton_Click(object sender, RoutedEventArgs e)
         {
             string timeStr = timeTextBox01.Text;
-            bool isReverse = isReverse_checkbox01.IsChecked == true;
+            int direction = 0;
+            if (isReverse_checkbox01.IsChecked == true)
+                direction = 1;
             int power = (int)powerSlider01.Value;
 
             if (int.TryParse(timeStr, out int time))
             {
-                var newData = new MainWindow.Data(time, isReverse ? 1 : 0, power);
+                var newData = new MainWindow.Data(time, direction, power);
                 Table.Add(newData);
             }
 
