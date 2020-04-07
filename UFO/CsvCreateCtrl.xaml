@@ -22,7 +22,7 @@
             </ScrollViewer>
             <GroupBox Margin="2,5">
                 <StackPanel MinWidth="380">
-                    <CheckBox x:Name="timeIsNowPlaytime_checkbox" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0">再生時刻にセット</CheckBox>
+                    <CheckBox x:Name="timeIsNowPlaytime_checkbox" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0" Checked="timeIsNowPlaytime_checkbox_Checked" Unchecked="timeIsNowPlaytime_checkbox_Unchecked">再生時刻にセット</CheckBox>
                     <Label>出力（％）</Label>
                     <Slider x:Name="powerSlider01" Maximum="100" SmallChange="10" LargeChange="10" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" TickPlacement="BottomRight" TickFrequency="10" 
                             Value="{Binding ElementName=powerTextbox01, Path=Text}"/>

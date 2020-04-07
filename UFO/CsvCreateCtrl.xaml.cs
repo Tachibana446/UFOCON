@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace UFO
 {
@@ -25,6 +26,10 @@ namespace UFO
     {
         public ObservableCollection<MainWindow.Data> Table { get; private set; } = new ObservableCollection<MainWindow.Data>();
 
+        /// <summary>
+        /// プレイヤーと同期するチェックボックスがONのときにテキストボックスを更新するタイマー
+        /// </summary>
+        private DispatcherTimer timeTextboxTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
 
         public CsvCreateCtrl()
         {
@@ -39,8 +44,10 @@ namespace UFO
             // コレクションビューで時間でソート
             var cView = CollectionViewSource.GetDefaultView(Table);
             cView.SortDescriptions.Add(new System.ComponentModel.SortDescription("Time", System.ComponentModel.ListSortDirection.Ascending));
-
+            // 音声プレイヤーの現在時間と挿入する新規データの時間を同期
+            timeTextboxTimer.Tick += TimeTextboxTimer_Tick;
         }
+
 
         /// <summary>
         /// CSVをロードするためのボタンが押されたときのイベント。ロードしたCSVのデータをtableに格納
@@ -164,6 +171,34 @@ namespace UFO
             MainWindow.Instance.LoadEditedData();   // データとグラフを再読み込み
         }
 
+        /// <summary>
+        /// 新規データの時間とプレイヤーの再生時間を同期ON
+        /// </summary>
+        private void timeIsNowPlaytime_checkbox_Checked(object sender, RoutedEventArgs e)
+        {
+            timeTextBox01.IsEnabled = false;
+            timeTextboxTimer.Start();
+        }
+
+        /// <summary>
+        /// 新規データの時間とプレイヤーの再生時間を同期OFF
+        /// </summary>
+        private void timeIsNowPlaytime_checkbox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            timeTextBox01.IsEnabled = true;
+            timeTextboxTimer.Stop();
+        }
+
+        /// <summary>
+        /// 音声プレイヤーの現在時間と挿入する新規データの時間を同期
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TimeTextboxTimer_Tick(object sender, EventArgs e)
+        {
+            var position = MediaPlayer.player.Position;
+            timeTextBox01.Text = Math.Round(position.TotalSeconds * 10, 0, MidpointRounding.AwayFromZero).ToString();
+        }
 
     }
 }
