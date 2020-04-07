@@ -247,5 +247,7 @@ namespace UFO
             int n = removed.Count();
             logTextbox.Text = logTextbox.Text.Insert(0, $"{DateTime.Now.ToShortTimeString()} : {n}件の削除をもとに戻しました。\n");
         }
+
+
     }
 }

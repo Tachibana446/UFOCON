@@ -27,34 +27,50 @@ namespace UFO
         /// <summary>
         /// 現在停止中かどうか
         /// </summary>
-        public bool isPaused { get; private set; } = true;
+        public static bool isPaused { get; private set; } = true;
 
         /// <summary>
         /// 再生時刻を表示するタイマー
         /// </summary>
-        private DispatcherTimer mediaPositionTimer = null;
+        private DispatcherTimer mediaPositionTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
         /// <summary>
         /// スライダーの位置を更新するタイマー
         /// </summary>
-        private DispatcherTimer sliderPostionTimer = null;
+        private DispatcherTimer sliderPostionTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
         /// <summary>
         /// グラフの位置を更新するタイマー
         /// </summary>
-        private DispatcherTimer graphPositionTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(50) };
+        private static DispatcherTimer graphPositionTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(50) };
 
         /// <summary>
         /// Slider_ValueChangedイベントがユーザーの手で起こされたものかコード上起こされたものか判別する
         /// </summary>
         private bool changeSliderByCode = false;
 
+        static MediaPlayer()
+        {
+            graphPositionTimer.Tick += GraphPositionTimer_Tick;
+            graphPositionTimer.Start();
+        }
+
         public MediaPlayer()
         {
             InitializeComponent();
 
             slider.IsEnabled = false;
-            player.MediaOpened += Player_MediaOpened;
-            graphPositionTimer.Tick += GraphPositionTimer_Tick;
-            graphPositionTimer.Start();
+            player.MediaOpened += this.Player_MediaOpened;
+            mediaPositionTimer.Tick += (_s, _e) => SetPlayTimeText(player.Position);
+            sliderPostionTimer.Tick += (_s, _e) =>
+            {
+                changeSliderByCode = true;
+                slider.Value = player.Position.TotalMilliseconds;
+            };
+            // すでにファイルが開かれている（2つ目以降のプレイヤー）だったら
+            if (player.Source != null)
+            {
+                filePath.Text = player.Source.AbsoluteUri;
+                Player_MediaOpened(this, null); // 各種表示用タイマーも開始
+            }
         }
 
         /// <summary>
@@ -62,7 +78,7 @@ namespace UFO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void GraphPositionTimer_Tick(object sender, EventArgs e)
+        private static void GraphPositionTimer_Tick(object sender, EventArgs e)
         {
             if (player.NaturalDuration.HasTimeSpan)
             {
@@ -72,7 +88,7 @@ namespace UFO
 
 
         /// <summary>
-        /// ファイルの読み込みが完了したときスライダーをセットする
+        /// ファイルの読み込みが完了したときその音声に合わせてスライダーをセットする
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -82,14 +98,12 @@ namespace UFO
             {
                 slider.Maximum = player.NaturalDuration.TimeSpan.TotalMilliseconds;
                 slider.IsEnabled = true;
-                
-                sliderPostionTimer = new DispatcherTimer();
-                sliderPostionTimer.Interval = TimeSpan.FromMilliseconds(100);
-                sliderPostionTimer.Tick += (_s, _e) =>
-                {
-                    slider.Value = player.Position.TotalMilliseconds;
-                    changeSliderByCode = true;
-                };
+
+                // 稼働中のタイマーを停止
+                mediaPositionTimer?.Stop();
+                sliderPostionTimer?.Stop();
+                // 再生時間表示タイマーを再起動
+                mediaPositionTimer.Start();
                 sliderPostionTimer.Start();
             }
         }
@@ -106,16 +120,6 @@ namespace UFO
                     player.Close();
                 player.Open(new Uri(filePath.Text, UriKind.Absolute));
 
-                // 稼働中のタイマーを停止
-                mediaPositionTimer?.Stop();
-                sliderPostionTimer?.Stop();
-                // 再生時間表示タイマーを再起動
-                mediaPositionTimer = new DispatcherTimer()
-                {
-                    Interval = TimeSpan.FromMilliseconds(100)
-                };
-                mediaPositionTimer.Tick += (_s, _e) => SetPlayTimeText(player.Position);
-                mediaPositionTimer.Start();
             }
         }
 

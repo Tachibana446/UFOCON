@@ -7,46 +7,48 @@
              mc:Ignorable="d" 
              Background="White"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGrid" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn" />
-        <StackPanel Grid.Column="1">
-            <Button x:Name="openCsvButton">CSVファイル読み込み</Button>
-            <Label />
-            <Button x:Name="saveCsvButton" Click="SaveCSVButton_Click" >CSVファイルを保存</Button>
-            <TextBox x:Name="logTextbox" MinLines="4" MaxLines="8" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"/>
-            <GroupBox Margin="2,5">
-                <StackPanel MinWidth="380">
-                    <CheckBox x:Name="timeIsNowPlaytime_checkbox" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0" Checked="timeIsNowPlaytime_checkbox_Checked" Unchecked="timeIsNowPlaytime_checkbox_Unchecked">再生時刻にセット</CheckBox>
-                    <Label>出力（％）</Label>
-                    <Slider x:Name="powerSlider01" Maximum="100" SmallChange="10" LargeChange="10" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" TickPlacement="BottomRight" TickFrequency="10" 
+    <DockPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="dataGrid" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn" />
+            <StackPanel Grid.Column="1">
+                <Button x:Name="openCsvButton">CSVファイル読み込み</Button>
+                <Label />
+                <Button x:Name="saveCsvButton" Click="SaveCSVButton_Click" >CSVファイルを保存</Button>
+                <TextBox x:Name="logTextbox" MinLines="4" MaxLines="8" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"/>
+                <GroupBox Margin="2,5">
+                    <StackPanel MinWidth="380">
+                        <CheckBox x:Name="timeIsNowPlaytime_checkbox" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0" Checked="timeIsNowPlaytime_checkbox_Checked" Unchecked="timeIsNowPlaytime_checkbox_Unchecked">再生時刻にセット</CheckBox>
+                        <Label>出力（％）</Label>
+                        <Slider x:Name="powerSlider01" Maximum="100" SmallChange="10" LargeChange="10" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" TickPlacement="BottomRight" TickFrequency="10" 
                             Value="{Binding ElementName=powerTextbox01, Path=Text}"/>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="timeTextBox01" MinWidth="45" Margin="5,0,0,0" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="18">0</TextBox>
-                        <Label VerticalAlignment="Bottom" HorizontalAlignment="Left">デシ秒</Label>
-                        <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
-                        <CheckBox x:Name="isReverse_checkbox01" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0">逆回転</CheckBox>
-                        <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
-                        <TextBox x:Name="powerTextbox01" MinWidth="45" Margin="5,0" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="18">0</TextBox>
-                        <Label FontSize="18">%</Label>
-                        <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
-                        <Button Padding="10, 5" FontSize="16" Background="#FF015FED" Foreground="White" Click="AddDataButton_Click">データを追加</Button>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="timeTextBox01" MinWidth="45" Margin="5,0,0,0" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="18">0</TextBox>
+                            <Label VerticalAlignment="Bottom" HorizontalAlignment="Left">デシ秒</Label>
+                            <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
+                            <CheckBox x:Name="isReverse_checkbox01" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Margin="5,0">逆回転</CheckBox>
+                            <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
+                            <TextBox x:Name="powerTextbox01" MinWidth="45" Margin="5,0" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="18">0</TextBox>
+                            <Label FontSize="18">%</Label>
+                            <Border Width="1" BorderBrush="#FF7A7A7A" BorderThickness="0,0,1,0" Margin="5,0"/>
+                            <Button Padding="10, 5" FontSize="16" Background="#FF015FED" Foreground="White" Click="AddDataButton_Click">データを追加</Button>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </GroupBox>
-            <GroupBox >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
-                    <Label VerticalAlignment="Center">現在選択している行の</Label>
-                    <Button Padding="10,5" Margin="5,0" Background="#FFE81500" Foreground="White" VerticalAlignment="Center" Click="RemoveDataButton_Click" >データを削除</Button>
-                    <Button Padding="10,5" Margin="5,0" VerticalAlignment="Center" Click="UndoRemoveDataButton_Click" >
-                        ↺取り消す
-                    </Button>
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
-    </Grid>
+                </GroupBox>
+                <GroupBox >
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
+                        <Label VerticalAlignment="Center">現在選択している行の</Label>
+                        <Button Padding="10,5" Margin="5,0" Background="#FFE81500" Foreground="White" VerticalAlignment="Center" Click="RemoveDataButton_Click" >データを削除</Button>
+                        <Button Padding="10,5" Margin="5,0" VerticalAlignment="Center" Click="UndoRemoveDataButton_Click" >
+                            ↺取り消す
+                        </Button>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </UserControl>

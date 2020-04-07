@@ -6,45 +6,50 @@
         xmlns:local="clr-namespace:UFO"
         mc:Ignorable="d"
         Title="MainWindow" Height="480" Width="840">
-    <TabControl SelectionChanged="TabControl_SelectionChanged">
-        <TabItem Header="CSV">
-            <local:CsvCreateCtrl x:Name="csvCreateCtrl"/>
-        </TabItem>
-        <TabItem Header="メイン">
-            <DockPanel>
-                <GroupBox Header="音声" HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Padding="30,10" Margin="5">
-                    <local:MediaPlayer x:Name="mediaPlayer"/>
-                </GroupBox>
-                <GroupBox Header="UFO操作" DockPanel.Dock="Left" HorizontalAlignment="Center" Padding="30,10" Margin="5">
-                    <Button x:Name="stopButton" Content="STOP" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="105" Height="64" Click="stopButton_Click" />
-                </GroupBox>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom">
+            <Button Click="AppendPlayerButton_Click">≡</Button>
+        </StackPanel>
+        <TabControl SelectionChanged="TabControl_SelectionChanged">
+            <TabItem Header="CSV">
+                <local:CsvCreateCtrl x:Name="csvCreateCtrl"/>
+            </TabItem>
+            <TabItem Header="メイン">
+                <DockPanel>
+                    <GroupBox Header="音声" HorizontalAlignment="Stretch" DockPanel.Dock="Bottom" Padding="30,10" Margin="5">
+                        <local:MediaPlayer x:Name="mediaPlayer"/>
+                    </GroupBox>
+                    <GroupBox Header="UFO操作" DockPanel.Dock="Left" HorizontalAlignment="Center" Padding="30,10" Margin="5">
+                        <Button x:Name="stopButton" Content="STOP" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="105" Height="64" Click="stopButton_Click" />
+                    </GroupBox>
 
-                <GroupBox HorizontalAlignment="Center" Header="CSV" Padding="30,10" Margin="0,5">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="CSVファイル"/><Run Text="："/></TextBlock>
-                            <TextBlock x:Name="CSVFilePathText" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="なし" VerticalAlignment="Top" Width="140"/>
-                            <Button x:Name="CSVFileOpenButton" Content="開く" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="CSVFileOpenButton_Click"/>
+                    <GroupBox HorizontalAlignment="Center" Header="CSV" Padding="30,10" Margin="0,5">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="CSVファイル"/><Run Text="："/></TextBlock>
+                                <TextBlock x:Name="CSVFilePathText" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="なし" VerticalAlignment="Top" Width="140"/>
+                                <Button x:Name="CSVFileOpenButton" Content="開く" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="CSVFileOpenButton_Click"/>
+                            </StackPanel>
+                            <TextBlock>CSVの形式は 時間(1/10秒), 方向, 強さ</TextBlock>
+                            <TextBlock Foreground="Gray">時間が3000なら300.0秒に稼働</TextBlock>
+                            <TextBlock Foreground="Gray">方向は0か1で指定</TextBlock>
+                            <TextBlock Foreground="Gray">強さは0～100の間で指定</TextBlock>
                         </StackPanel>
-                        <TextBlock>CSVの形式は 時間(1/10秒), 方向, 強さ</TextBlock>
-                        <TextBlock Foreground="Gray">時間が3000なら300.0秒に稼働</TextBlock>
-                        <TextBlock Foreground="Gray">方向は0か1で指定</TextBlock>
-                        <TextBlock Foreground="Gray">強さは0～100の間で指定</TextBlock>
-                    </StackPanel>
-                </GroupBox>
-            </DockPanel>
-        </TabItem>
-        <TabItem Header="シリアルポート">
-            <local:PortSelectControl />
-        </TabItem>
-        <TabItem Header="グラフ" x:Name="graphTab">
-            <local:GraphControl x:Name="graphControl"/>
-        </TabItem>
-        <TabItem Header="ランダム">
-            <local:UfoControllerControll x:Name="randomPlayControll"/>
-        </TabItem>
-        <TabItem Header="使い方">
-            <local:UsageCtrl />
-        </TabItem>
-    </TabControl>
+                    </GroupBox>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="シリアルポート">
+                <local:PortSelectControl />
+            </TabItem>
+            <TabItem Header="グラフ" x:Name="graphTab">
+                <local:GraphControl x:Name="graphControl"/>
+            </TabItem>
+            <TabItem Header="ランダム">
+                <local:UfoControllerControll x:Name="randomPlayControll"/>
+            </TabItem>
+            <TabItem Header="使い方">
+                <local:UsageCtrl />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </Window>

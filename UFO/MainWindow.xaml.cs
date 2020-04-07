@@ -132,7 +132,7 @@ namespace UFO
         /// <param name="e"></param>
         private void CsvTimer_Tick(object sender, EventArgs e)
         {
-            if (mediaPlayer.isPaused)
+            if (MediaPlayer.isPaused)
                 return;
             double nowTime = MediaPlayer.player.Position.TotalSeconds * 10;
             // 巻き戻されていた場合何もしない
@@ -176,7 +176,7 @@ namespace UFO
             {
                 return $"{Time},{Direction},{Level}";
             }
-            public string ToString()
+            public override string ToString()
             {
                 return $"{Time}dsec,{Direction},{Level}%";
             }
@@ -209,6 +209,37 @@ namespace UFO
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
             AllStop();
+        }
+
+
+        /// <summary>
+        /// 追加表示されるプレイヤー
+        /// </summary>
+        private MediaPlayer appendPlayer = null;
+
+        /// <summary>
+        /// 音声プレイヤーを追加表示するボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AppendPlayerButton_Click(object sender, RoutedEventArgs e)
+        {
+            var b = sender as Button;
+            var panel = b?.Parent as StackPanel;
+            if (panel == null) return;
+
+            if (appendPlayer == null)
+            {
+                appendPlayer = new MediaPlayer();
+                panel.Children.Add(appendPlayer);
+                MainWindow.Instance.Height += appendPlayer.MinHeight;
+            }
+            else
+            {
+                MainWindow.Instance.Height -= appendPlayer.ActualHeight;
+                panel.Children.Remove(appendPlayer);
+                appendPlayer = null;
+            }
         }
     }
 }
