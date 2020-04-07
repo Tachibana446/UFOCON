@@ -31,6 +31,12 @@ namespace UFO
         /// </summary>
         private DispatcherTimer timeTextboxTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
 
+
+        /// <summary>
+        /// 削除したデータ（行）
+        /// </summary>
+        private Stack<MainWindow.Data> removedData = new Stack<MainWindow.Data>();
+
         public CsvCreateCtrl()
         {
             InitializeComponent();
@@ -42,8 +48,10 @@ namespace UFO
             // 表のソースを配列に設定
             dataGrid.ItemsSource = Table;
             // コレクションビューで時間でソート
+            /*
             var cView = CollectionViewSource.GetDefaultView(Table);
             cView.SortDescriptions.Add(new System.ComponentModel.SortDescription("Time", System.ComponentModel.ListSortDirection.Ascending));
+            */
             // 音声プレイヤーの現在時間と挿入する新規データの時間を同期
             timeTextboxTimer.Tick += TimeTextboxTimer_Tick;
         }
@@ -200,5 +208,24 @@ namespace UFO
             timeTextBox01.Text = Math.Round(position.TotalSeconds * 10, 0, MidpointRounding.AwayFromZero).ToString();
         }
 
+
+        /// <summary>
+        /// 選択中の行のデータを削除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RemoveDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = dataGrid.SelectedCells.Select(cell => cell.Item as MainWindow.Data).Where(d => d != null).Distinct();
+            int n = selected.Count();
+            foreach (var data in selected)
+            {
+                if (data == null) continue;
+                removedData.Push(data);
+                Table.Remove(data);
+            }
+            logTextbox.Text = logTextbox.Text.Insert(0, $"{DateTime.Now.ToShortTimeString()} : データを{n}件削除\n");
+            MainWindow.Instance.LoadEditedData();   // データとグラフを再読み込み
+        }
     }
 }

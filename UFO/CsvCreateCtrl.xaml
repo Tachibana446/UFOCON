@@ -40,6 +40,15 @@
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
+            <GroupBox >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" >
+                    <Label VerticalAlignment="Center">現在選択している行の</Label>
+                    <Button Padding="10,5" Margin="5,0" Background="#FFE81500" Foreground="White" VerticalAlignment="Center" Click="RemoveDataButton_Click" >データを削除</Button>
+                    <Button Padding="10,5" Margin="5,0" VerticalAlignment="Center" >
+                        ↺取り消す
+                    </Button>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
     </Grid>
 </UserControl>
