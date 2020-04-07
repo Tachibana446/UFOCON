@@ -49,6 +49,8 @@ namespace UFO
             {
                 LoadCSV(dialog.FileName);
             }
+
+            csvCreateCtrl.OpenCsvButton_Click(sender, e);
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace UFO
         /// CSVを読み込む。形式は時間（1/10秒）,方向（1:正 0:負),強さ(0~100まで）
         /// </summary>
         /// <param name="filepath"></param>
-        private void LoadCSV(string filepath)
+        public void LoadCSV(string filepath)
         {
             dataList.Clear(); // 以前のデータをクリア
             graphControl.isSetGraph = false; // グラフを書き直す必要がある
@@ -147,6 +149,11 @@ namespace UFO
                 Time = time;
                 Direction = direction;
                 Level = level;
+            }
+
+            public string ToCSV()
+            {
+                return $"{Time},{Direction},{Level}";
             }
         }
 

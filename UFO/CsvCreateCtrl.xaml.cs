@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,13 +30,9 @@ namespace UFO
         {
             InitializeComponent();
 
+            // CSVを開くボタンを押したらメインタブとこのタブの処理を行う
             openCsvButton.Click += MainWindow.Instance.CSVFileOpenButton_Click;
             openCsvButton.Click += OpenCsvButton_Click;
-            
-            for (int i = 0; i < 10; i++)
-            {
-                table.Add(new MainWindow.Data(i, 0, 0));
-            }
 
             // 表のソースを配列に設定
             dataGrid.ItemsSource = table;
@@ -44,7 +42,12 @@ namespace UFO
 
         }
 
-        private void OpenCsvButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// CSVをロードするためのボタンが押されたときのイベント。ロードしたCSVのデータをtableに格納
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void OpenCsvButton_Click(object sender, RoutedEventArgs e)
         {
             table = new ObservableCollection<MainWindow.Data>(MainWindow.Instance.dataList);
             dataGrid.ItemsSource = table;
@@ -79,6 +82,66 @@ namespace UFO
         {
             var r = new Random();
             table.Add(new MainWindow.Data(r.Next(), r.Next(), 1));
+        }
+
+        /// <summary>
+        /// 増分保存してログに表示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SaveCSVButton_Click(object sender, RoutedEventArgs e)
+        {
+            saveCsvButton.IsEnabled = false;
+            var newFilePath = getNewFilePath();
+
+            SaveCsv(newFilePath);
+            logTextbox.Text = $"CSVを以下のファイルに保存：{newFilePath}\n" + logTextbox.Text;
+            saveCsvButton.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// 現在開いているCSVデータをファイルに保存
+        /// </summary>
+        /// <param name="newFilePath"></param>
+        private void SaveCsv(string newFilePath)
+        {
+            using (var sw = new StreamWriter(newFilePath))
+            {
+                foreach (var row in table.OrderBy(r => r.Time))
+                {
+                    sw.WriteLine(row.ToCSV());
+                }
+            }
+            MainWindow.Instance.LoadCSV(newFilePath);   // グラフを読み込み直す
+        }
+
+        /// <summary>
+        /// 現在開いているファイルの増分したファイル名を返す
+        /// </summary>
+        /// <returns></returns>
+        private static string getNewFilePath()
+        {
+            string newPath = MainWindow.Instance.loadedCsvFullPath;
+            if (string.IsNullOrWhiteSpace(newPath))
+                newPath = "./data.csv";
+            var f = new FileInfo(newPath);
+
+            while (f.Exists)
+            {
+                var res = Regex.Match(newPath, @"(.*\.)(\d{4})\.csv$");
+                if (res.Success && int.TryParse(res.Groups[2].Value, out int num))
+                {
+                    var n2 = (num + 1).ToString("D4");
+                    newPath = res.Groups[1].Value + n2 + ".csv";
+                }
+                else
+                {
+                    newPath = Regex.Replace(newPath, @".csv$", "");
+                    newPath += ".0001.csv";
+                }
+                f = new FileInfo(newPath);
+            }
+            return f.FullName;
         }
     }
 }

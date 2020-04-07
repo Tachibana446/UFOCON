@@ -15,7 +15,11 @@
         <DataGrid x:Name="dataGrid" AutoGeneratingColumn="dataGrid_AutoGeneratingColumn" />
         <StackPanel Grid.Column="1">
             <Button x:Name="openCsvButton">CSVファイル読み込み</Button>
-            
+            <Label />
+            <Button x:Name="saveCsvButton" Click="SaveCSVButton_Click" >CSVファイルを保存</Button>
+            <ScrollViewer>
+                <TextBox x:Name="logTextbox" MinLines="4" MaxLines="8" TextWrapping="Wrap"/>
+            </ScrollViewer>
         </StackPanel>
     </Grid>
 </UserControl>
