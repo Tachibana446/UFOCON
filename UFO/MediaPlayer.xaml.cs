@@ -68,7 +68,7 @@ namespace UFO
             // すでにファイルが開かれている（2つ目以降のプレイヤー）だったら
             if (player.Source != null)
             {
-                filePath.Text = player.Source.AbsoluteUri;
+                filePath.Text = System.IO.Path.GetFileName(player.Source.LocalPath);
                 Player_MediaOpened(this, null); // 各種表示用タイマーも開始
             }
         }
@@ -99,6 +99,7 @@ namespace UFO
                 slider.Maximum = player.NaturalDuration.TimeSpan.TotalMilliseconds;
                 slider.IsEnabled = true;
 
+                filePath.Text = System.IO.Path.GetFileName(player.Source.LocalPath);
                 // 稼働中のタイマーを停止
                 mediaPositionTimer?.Stop();
                 sliderPostionTimer?.Stop();
@@ -114,11 +115,9 @@ namespace UFO
             dialog.Filter = "wav files (*.wav)|*.wav|All files (*.*)|*.*";
             if (dialog.ShowDialog() == true)
             {
-                filePath.Text = dialog.FileName;
-
                 if (player.Source != null)
                     player.Close();
-                player.Open(new Uri(filePath.Text, UriKind.Absolute));
+                player.Open(new Uri(dialog.FileName, UriKind.Absolute));
 
             }
         }

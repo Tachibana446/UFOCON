@@ -11,7 +11,7 @@
                 ValueChanged="Slider_ValueChanged"/>
         <StackPanel Orientation="Horizontal">
             <TextBlock HorizontalAlignment="Left"  TextWrapping="Wrap" Text="ファイル：" VerticalAlignment="Top"/>
-            <TextBlock x:Name="filePath" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="197"/>
+            <TextBlock x:Name="filePath" HorizontalAlignment="Left" Height="23"  TextWrapping="Wrap" Text="None" VerticalAlignment="Top" Width="197"/>
             <Button x:Name="openFileButton" Content="開く" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="OpenFileButton_Click"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
